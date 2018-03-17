@@ -10,6 +10,8 @@ import java.math.RoundingMode;
  */
 
 public class Math {
+    private Math(){}
+
     public static double round(double value, int places, RoundingMode rm) {
         if (places < 0) throw new IllegalArgumentException();
 

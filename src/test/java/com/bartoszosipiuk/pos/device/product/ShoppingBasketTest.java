@@ -16,7 +16,7 @@ public class ShoppingBasketTest {
 
     @Test
     public void shoppingBasket_ShouldReturnSumZeroOnCreate() throws Exception {
-        assertEquals(0d, 0d, 0d);
+        assertEquals(0d, testShoppingBasket.getSumOfProductPrice(), 0d);
     }
 
     @Test

@@ -2,7 +2,6 @@ package com.bartoszosipiuk.pos.device.product;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,6 +33,10 @@ public class ShoppingBasket {
         DecimalFormat df = new DecimalFormat("#.##");
         df.setRoundingMode(RoundingMode.FLOOR);
         return df.format(sumOfProductPrice);
+    }
+
+    public Double getSumOfProductPrice() {
+        return sumOfProductPrice;
     }
 
     public List<Product> getListOfProducts(){

@@ -63,7 +63,7 @@ public class PointOfSale implements BarcodeScanListener{
         if(!isValidCode(barcode)){
             handleInvalidCode();
             return;
-        }else if (barcode.toLowerCase().equals(SpecialBarcodes.EXIT.toString().toLowerCase())) {
+        }else if (barcode.equalsIgnoreCase(SpecialBarcodes.EXIT.toString())) {
             handleExitCode();
             return;
         }
