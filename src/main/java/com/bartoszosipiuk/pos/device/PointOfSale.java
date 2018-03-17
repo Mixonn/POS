@@ -7,10 +7,6 @@ import com.bartoszosipiuk.pos.device.output.Printer;
 import com.bartoszosipiuk.pos.device.product.Product;
 import com.bartoszosipiuk.pos.device.product.ShoppingBasket;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * Created by Bartosz Osipiuk on 2018-03-16.
  *
@@ -49,9 +45,10 @@ public class PointOfSale implements BarcodeScanListener{
 
     @Override
     public synchronized void onBarcodeScan(String barcode) {
-        if (barcode.toLowerCase().equals(SpecialBarcodes.EXIT.toString())) {
+        if (barcode.toLowerCase().equals(SpecialBarcodes.EXIT.toString().toLowerCase())) {
             handleExitCode();
-        } else if(!isValidCode(barcode)){
+        }
+        if(!isValidCode(barcode)){
             handleInvalidCode();
         }
         Product foundProduct = productDAO.findProduct(barcode);
@@ -66,7 +63,7 @@ public class PointOfSale implements BarcodeScanListener{
             return;
         }
         printer.print(shoppingBasket.toString());
-        display.display(shoppingBasket.getSumOfProductPrice());
+        display.display(shoppingBasket.getSumOfProductPriceToDisplay());
         shoppingBasket = new ShoppingBasket();
     }
 

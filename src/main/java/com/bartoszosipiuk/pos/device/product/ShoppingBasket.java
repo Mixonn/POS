@@ -2,7 +2,9 @@ package com.bartoszosipiuk.pos.device.product;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -16,7 +18,7 @@ public class ShoppingBasket {
     private Double sumOfProductPrice;
 
     public ShoppingBasket() {
-        this.products = new ArrayList<>();
+        this.products = new LinkedList<>();
         this.sumOfProductPrice = 0d;
     }
     
@@ -28,10 +30,14 @@ public class ShoppingBasket {
         sumOfProductPrice+=product.getPrice();
     }
 
-    public String getSumOfProductPrice() {
+    public String getSumOfProductPriceToDisplay() {
         DecimalFormat df = new DecimalFormat("#.##");
         df.setRoundingMode(RoundingMode.FLOOR);
         return df.format(sumOfProductPrice);
+    }
+
+    public List<Product> getListOfProducts(){
+        return Collections.unmodifiableList(products);
     }
 
     @Override

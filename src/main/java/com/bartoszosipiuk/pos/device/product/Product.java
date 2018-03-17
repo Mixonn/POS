@@ -33,4 +33,24 @@ public class Product {
     public String toString() {
         return name + '\t' + price;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product product = (Product) o;
+
+        if (!name.equals(product.name)) return false;
+        if (!price.equals(product.price)) return false;
+        return barcode.equals(product.barcode);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + price.hashCode();
+        result = 31 * result + barcode.hashCode();
+        return result;
+    }
 }
