@@ -39,4 +39,10 @@ public class BarcodeScannerTest {
         testBarcodeScanner.addListener(testPointOfSale);
         testBarcodeScanner.addListener(testPointOfSale);
     }
+
+    public void addListener_ShouldAddUniqueListenerProperly() throws ListenerAddedTwiceException {
+        testBarcodeScanner.addListener(mock(PointOfSale.class));
+        testBarcodeScanner.addListener(mock(PointOfSale.class));
+        testBarcodeScanner.addListener(mock(PointOfSale.class));
+    }
 }

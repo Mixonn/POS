@@ -1,5 +1,9 @@
 package com.bartoszosipiuk.pos.device.product;
 
+import com.bartoszosipiuk.pos.device.utils.Math;
+
+import java.math.RoundingMode;
+
 /**
  * Created by Bartosz Osipiuk on 2018-03-16.
  *
@@ -22,7 +26,7 @@ public class Product {
     }
 
     public Double getPrice() {
-        return price;
+        return Math.round(price, 2, RoundingMode.FLOOR);
     }
 
     public String getBarcode() {

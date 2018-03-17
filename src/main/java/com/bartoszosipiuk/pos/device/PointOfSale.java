@@ -28,6 +28,21 @@ public class PointOfSale implements BarcodeScanListener{
         }
     }
 
+    public enum SpecialMessages {
+        INVALID_BARCODE("Invalid bar-code"),
+        PRODUCT_NOT_FOUND("Product not found");
+
+        private final String message;
+        SpecialMessages(String message) {
+            this.message = message;
+        }
+
+        @Override
+        public String toString() {
+            return message;
+        }
+    }
+
     private boolean isOrderActive = false;
 
 
@@ -45,11 +60,12 @@ public class PointOfSale implements BarcodeScanListener{
 
     @Override
     public synchronized void onBarcodeScan(String barcode) {
-        if (barcode.toLowerCase().equals(SpecialBarcodes.EXIT.toString().toLowerCase())) {
-            handleExitCode();
-        }
         if(!isValidCode(barcode)){
             handleInvalidCode();
+            return;
+        }else if (barcode.toLowerCase().equals(SpecialBarcodes.EXIT.toString().toLowerCase())) {
+            handleExitCode();
+            return;
         }
         Product foundProduct = productDAO.findProduct(barcode);
         if(foundProduct == null) {
@@ -58,6 +74,15 @@ public class PointOfSale implements BarcodeScanListener{
             handleProductFound(foundProduct);
         }
     }
+
+    public boolean isOrderActive() {
+        return isOrderActive;
+    }
+
+    public int getQuantityOfItemsInBasket(){
+        return shoppingBasket.getListOfProducts().size();
+    }
+
     private void handleExitCode() {
         if(!isOrderActive) {
             return;
@@ -65,22 +90,24 @@ public class PointOfSale implements BarcodeScanListener{
         printer.print(shoppingBasket.toString());
         display.display(shoppingBasket.getSumOfProductPriceToDisplay());
         shoppingBasket = new ShoppingBasket();
+        isOrderActive = false;
     }
 
     private void handleInvalidCode() {
-        display.display("Invalid bar-code");
+        display.display(SpecialMessages.INVALID_BARCODE.toString());
     }
 
     private void handleProductNotFound() {
-        display.display("Product not found");
+        display.display(SpecialMessages.PRODUCT_NOT_FOUND.toString());
     }
     private void handleProductFound(Product p) {
+        isOrderActive = true;
         display.display(p.getName()+" "+p.getPrice());
         shoppingBasket.add(p);
     }
 
 
     private boolean isValidCode(String barcode){
-        return barcode == null || barcode.isEmpty();
+        return !(barcode == null || barcode.isEmpty());
     }
 }
