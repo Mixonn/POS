@@ -43,6 +43,11 @@ public class ShoppingBasketTest {
         assertEquals(2,testShoppingBasket.getListOfProducts().size());
     }
 
+    @Test(expected = ProductCannotBeNullException.class)
+    public void add_ShouldThrowExceptionWhenParameterIsNull() throws ProductCannotBeNullException {
+        testShoppingBasket.add(null);
+    }
+
 
 
 }

@@ -17,6 +17,13 @@ public class BarcodeScanner implements Scanner {
         this.listeners = new HashSet<>();
     }
 
+    /**
+     * This method is adding unique listener to BarcodeScanner set;
+     * On every {@link BarcodeScanner#scanBarcode() scanBarcode()} call, the added {@link BarcodeScanListener BarcodeScanListener}
+     * will be called {@link BarcodeScanListener#onBarcodeScan(String) BarcodeScanListener.onBarcdeScan()}
+     * @param barcodeScanListener The {@link BarcodeScanListener BarcodeScanListener} to add
+     * @throws ListenerAddedTwiceException Throws when the Set od BarcodeScanner contained the listener;
+     */
     public void addListener(BarcodeScanListener barcodeScanListener) throws ListenerAddedTwiceException {
         if(listeners.contains(barcodeScanListener)){
             throw new ListenerAddedTwiceException("Cannot add listener which is listened already");
@@ -24,6 +31,12 @@ public class BarcodeScanner implements Scanner {
         listeners.add(barcodeScanListener);
     }
 
+    /**
+     * This method should be called when the scanner read the barcode from the product.
+     *
+     * Calls {@link BarcodeScanListener#onBarcodeScan(String) BarcodeScanListener.onBarcdeScan()} on every {@link BarcodeScanListener BarcodeScanListener}
+     * that the BarcodeScanner set contains.
+     */
     @Override
     public void scanBarcode() {
         //todo: Connect device and use received code;
@@ -32,7 +45,7 @@ public class BarcodeScanner implements Scanner {
     }
 
     /**
-     * Method that simulate "reading barcode"
+     * Method that simulate "reading barcode" from barcode scanner.
      * @return Returns auto-generated barcode;
      */
     private String generateBarcode(){

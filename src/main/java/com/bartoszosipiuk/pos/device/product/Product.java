@@ -5,7 +5,8 @@ import com.bartoszosipiuk.pos.device.utils.Math;
 import java.math.RoundingMode;
 
 /**
- * Created by Bartosz Osipiuk on 2018-03-16.
+ * The Product class contains name, price and barcode. Rounds (Floor) the price to 2 decimal places.
+ *
  *
  * @author Bartosz Osipiuk
  */
@@ -15,24 +16,46 @@ public class Product {
     private Double price;
     private String barcode;
 
+    /**
+     * The Product Class constructor
+     * @param name Product name
+     * @param price Product price
+     * @param barcode Product barcode
+     */
     public Product(String name, Double price, String barcode) {
         this.name = name;
         this.price = price;
         this.barcode = barcode;
     }
 
+    /**
+     * Returns product name
+     * @return Returns product name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Returns product price rounded (Floor) to 2 decimal places.
+     * @return Returns product price rounded (Floor) to 2 decimal places.
+     */
     public Double getPrice() {
         return Math.round(price, 2, RoundingMode.FLOOR);
     }
 
+    /**
+     * Returns product barcode
+     * @return Returns product barcode
+     */
     public String getBarcode() {
         return barcode;
     }
 
+    /**
+     * Returns same and price separated by tabulator
+     * @return Returns name and price separated by tabulator
+     */
     @Override
     public String toString() {
         return name + '\t' + price;

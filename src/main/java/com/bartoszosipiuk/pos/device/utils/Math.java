@@ -4,14 +4,19 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- * Created by Bartosz Osipiuk on 2018-03-17.
- *
  * @author Bartosz Osipiuk
  */
 
 public class Math {
     private Math(){}
 
+    /**
+     * Returns rounded decimal.
+     * @param value Value to round
+     * @param places How many decimal places to round
+     * @param rm Witch {@link RoundingMode} to use
+     * @return Returns rounded decimal.
+     */
     public static double round(double value, int places, RoundingMode rm) {
         if (places < 0) throw new IllegalArgumentException();
 

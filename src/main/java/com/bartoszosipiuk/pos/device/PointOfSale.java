@@ -5,7 +5,11 @@ import com.bartoszosipiuk.pos.device.input.BarcodeScanListener;
 import com.bartoszosipiuk.pos.device.output.Display;
 import com.bartoszosipiuk.pos.device.output.Printer;
 import com.bartoszosipiuk.pos.device.product.Product;
+import com.bartoszosipiuk.pos.device.product.ProductCannotBeNullException;
 import com.bartoszosipiuk.pos.device.product.ShoppingBasket;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Bartosz Osipiuk on 2018-03-16.
@@ -14,6 +18,7 @@ import com.bartoszosipiuk.pos.device.product.ShoppingBasket;
  */
 
 public class PointOfSale implements BarcodeScanListener{
+    private static final Logger LOGGER = Logger.getLogger( PointOfSale.class.getName() );
     public enum SpecialBarcodes{
         EXIT("exit");
 
@@ -71,18 +76,35 @@ public class PointOfSale implements BarcodeScanListener{
         if(foundProduct == null) {
             handleProductNotFound();
         } else {
-            handleProductFound(foundProduct);
+            try {
+                handleProductFound(foundProduct);
+            } catch (ProductCannotBeNullException e) {
+                LOGGER.log( Level.SEVERE, e.toString(), e );
+            }
         }
     }
 
+    /**
+     * Tells that is order active or not. After exit barcode we set isOrderActive to false;
+     * @return Returns isOrderActive
+     */
     public boolean isOrderActive() {
         return isOrderActive;
     }
 
+    /**
+     * Returns how much items the basket contains
+     * @return Returns how much items the basket contains
+     */
     public int getQuantityOfItemsInBasket(){
         return shoppingBasket.getListOfProducts().size();
     }
 
+    /**
+     * Handles exit code. If order was active - lets the printer and display to show information about the order,
+     * clears the basket and sets isOrderActive to false
+     * If order was not active - returns
+     */
     private void handleExitCode() {
         if(!isOrderActive) {
             return;
@@ -93,20 +115,37 @@ public class PointOfSale implements BarcodeScanListener{
         isOrderActive = false;
     }
 
+    /**
+     * Handle invalid code by displaying {@link SpecialMessages#INVALID_BARCODE INVALID_BARCODE} message.
+     */
     private void handleInvalidCode() {
         display.display(SpecialMessages.INVALID_BARCODE.toString());
     }
 
+    /**
+     * Handle product not found by displaying {@link SpecialMessages#PRODUCT_NOT_FOUND PRODUCT_NOT_FOUND} message.
+     */
     private void handleProductNotFound() {
         display.display(SpecialMessages.PRODUCT_NOT_FOUND.toString());
     }
-    private void handleProductFound(Product p) {
+
+    /**
+     * Handles the found product. Sets isOrderActive to true, displays name and price of product and adds it to basket.
+     * @param p The product to handle
+     * @throws ProductCannotBeNullException when parameter is null
+     */
+    private void handleProductFound(Product p) throws ProductCannotBeNullException {
         isOrderActive = true;
         display.display(p.getName()+" "+p.getPrice());
         shoppingBasket.add(p);
     }
 
 
+    /**
+     * Check is the code is valid or not.
+     * @param barcode Barcode to chceck
+     * @return false if is null or empty, true if is not.
+     */
     private boolean isValidCode(String barcode){
         return !(barcode == null || barcode.isEmpty());
     }
